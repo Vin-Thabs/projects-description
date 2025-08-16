@@ -32,7 +32,7 @@ jobs:
       - name: set Up node js
         uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: '20'
 
       - name: Install dependencies
         run: |
@@ -62,4 +62,4 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
         with: 
-          folder: dist
+          folder: dist/
