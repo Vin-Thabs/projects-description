@@ -27,15 +27,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkoit
+    - name: Checkout
       uses: actions/checkout@v4
       
-    - name: setUp Node
+    - name: setup Node
       uses: actions/setup-node@v3
       with: 
         node-version: '20'
 
-    - name: install dependecies
+    - name: Install dependencies
       run: |
         npm install
 
@@ -46,6 +46,7 @@ jobs:
           
   
   deploy:
+    needs: build
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -64,4 +65,4 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
         with:
-          foder: dist/
+          folder: dist/
