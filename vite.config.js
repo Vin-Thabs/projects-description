@@ -2,12 +2,5 @@
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  base: '/projects-description',
-  build: {
-    outDir: 'dist', // Output directory for build
-    assetsDir: 'assets', // Where static assets like images will be placed
-    rollupOptions: {
-      input: './index.html', // Your entry point
-    },
-  },
+  base: '/projects-description/',
 });
