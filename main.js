@@ -1,35 +1,37 @@
 import * as THREE from 'three';
+import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+import { OrbitControls } from 'three/examples/jsm/Addons.js';
 
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
 const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+camera.position.z = 3;
 
-const camera = new THREE.PerspectiveCamera(
-    75,
-    window.innerWidth / window.innerHeight,
-    0.1,
-    1000
-);
+// Orbit COntrols
+const orbit_controls = new OrbitControls(camera, renderer.domElement);
+orbit_controls.target.set(0,1,0);
+orbit_controls.update();
 
-const axesHelper = new THREE.AxesHelper(5);
-scene.add(axesHelper);
+//Loading the model
+const glbLoader = new GLTFLoader();
+  glbLoader.load('scene.gltf', (root) => {
+    scene.add(root.scene);
+  }, undefined, (error) => {
+    console.error("Error Loading GLTF:", error);
+  });
 
-camera.position.set(0, 2, 5);
+// light for shading
+const light = new THREE.DirectionalLight(0xffffff, 4);
+light.position.set(2, 2, 2);
+scene.add(light);
 
-const gridHelper = new THREE.GridHelper(15, 50);
-scene.add(gridHelper);
 
-const geometry = new THREE.BoxGeometry();
-const material = new THREE.MeshBasicMaterial({color: 0x00FF00});
-const box = new THREE.Mesh(geometry, material);
-scene.add(box);
-
-function animate(time) {
-    box.rotation.x = time / 1000;
-    box.rotation.y = time / 1000;
-    renderer.render(scene, camera);
+function animate () {
+  requestAnimationFrame(animate);
+  orbit_controls.update(); // update the controls per frame
+  renderer.render(scene, camera);
 }
-
-renderer.setAnimationLoop(animate);
+animate();
